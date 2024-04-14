@@ -37,7 +37,7 @@ class User(db.Model):
 
 @app.route('/')
 def index():
-    return 'Hello, welcome to the user registration app!'
+    return 'Hello NTI students, welcome to the user registration app!'
 
 @app.route('/user', methods=['GET', 'POST'])
 def user():
