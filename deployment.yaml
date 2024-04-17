@@ -16,5 +16,5 @@ spec:
       - name: python-app
         image: alikhames/python-app
         ports:
-        - containerPort: 8081
+        - containerPort: 5000
         
