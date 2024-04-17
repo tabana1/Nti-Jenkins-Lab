@@ -3,35 +3,56 @@ pipeline {
     agent any
     
     environment {
-        dockerHubCredentialsID	    = 'DockerHub'  		    			      // DockerHub credentials ID.
+        dockerHubCredentialsID	        = 'DockerHub'  		    			      // DockerHub credentials ID.
         imageName   		            = 'alikhames/python-app'     			// DockerHub repo/image name.
-	      k8sCredentialsID	          = 'kubernetes'	    				     // KubeConfig credentials ID.    
+	    k8sCredentialsID	            = 'kubernetes'	    				     // KubeConfig credentials ID.    
     }
     
     stages {       
        
-        stage('Build and Push Docker Image') {
+        stage('Build Docker image from Dockerfile in GitHub') {
             steps {
                 script {
                  	
-                 		buildandPushDockerImage("${dockerHubCredentialsID}", "${imageName}")
+                 		buildDockerImage("${imageName}")
+                      
+                }
+            }
+        }
+        stage('Push image to Docker hub') {
+            steps {
+                script {
+                 	
+                 		pushDockerImage("${dockerHubCredentialsID}", "${imageName}")
                       
                 }
             }
         }
 
-        stage('Deploy on k8s Cluster') {
+        stage('Edit new image in deployment.yaml file') {
             steps {
                 script { 
                 	
-				                  deployOnKubernetes("${k8sCredentialsID}", "${imageName}")
+				        editNewImage("${imageName}")
                     	
+                }
+            }
+        }
+        stage('Deploy on k8s Cluster') {
+            steps {
+                script { 
+                	dir('k8s') {
+				         deployOnKubernetes("${k8sCredentialsID}")
+                    }
                 }
             }
         }
     }
 
     post {
+        always {
+            echo "${JOB_NAME}-${BUILD_NUMBER} pipeline always succeeded"
+        }
         success {
             echo "${JOB_NAME}-${BUILD_NUMBER} pipeline succeeded"
         }
