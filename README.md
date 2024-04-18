@@ -100,4 +100,4 @@ In case of pipeline success or failure, the following messages will be displayed
 ---
 
 ### - Deployment from OpenShift cluster
-![](https://github.com/IbrahimmAdel/Jenkins-Pipeline/blob/Master/screenshots/Screenshot%20from%202024-01-23%2015-50-05.png)
+![](https://github.com/AliKhamed/Nti-Jenkins-Lab/blob/main/screenshots/3.png)
