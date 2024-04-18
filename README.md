@@ -55,9 +55,9 @@ stage('Push image to Docker hub') {
 stage('Edit new image in deployment.yaml file') {
             steps {
                 script { 
-                	
+                	dir('k8s') {
 				        editNewImage("${imageName}")
-                    	
+                    	}
                 }
             }
         }
