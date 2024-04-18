@@ -99,5 +99,5 @@ In case of pipeline success or failure, the following messages will be displayed
 ![](https://github.com/AliKhamed/Nti-Jenkins-Lab/blob/main/screenshots/2.png)
 ---
 
-### - Deployment from OpenShift cluster
+### - Deployment from k8s minikube cluster
 ![](https://github.com/AliKhamed/Nti-Jenkins-Lab/blob/main/screenshots/3.png)
