@@ -81,8 +81,6 @@ stage('Deploy on k8s Cluster') {
 ### Post-Build Actions
 In case of pipeline success or failure, the following messages will be displayed:
 ```
-
-```
  post {
         always {
             echo "${JOB_NAME}-${BUILD_NUMBER} pipeline always succeeded"
