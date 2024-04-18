@@ -32,9 +32,9 @@ pipeline {
         stage('Edit new image in deployment.yaml file') {
             steps {
                 script { 
-                	
+                	dir('k8s') {
 				        editNewImage("${imageName}")
-                    	
+			}
                 }
             }
         }
