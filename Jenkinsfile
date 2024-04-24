@@ -3,56 +3,50 @@ pipeline {
     agent any
     
     environment {
-        dockerHubCredentialsID	            = 'DockerHub'  		    			      // DockerHub credentials ID.
-        imageName   		            = 'tabana1/nti-python-app'     			// DockerHub repo/image name.
-	    k8sCredentialsID	            = 'mykubeconfig'	    				     // KubeConfig credentials ID.    
+        dockerHubCredentialsID	    = 'DockerHub'  		    			// DockerHub credentials 
+        imageName   		    = 'tabana1/nti-app'     			// DockerHub repo/image name.
+	k8sCredentialsID	    = 'mykubeconfig'	    				     // KubeConfig credentials ID.   
     }
     
     stages {       
+
+        stage('Run Unit Test') {
+            steps {
+                script {
+                	// Navigate to the directory contains the Application
+                	dir('App') {
+                		runUnitTests
+            		}
+        	}
+    	    }
+	}
+	
        
-        stage('Build Docker image from Dockerfile in GitHub') {
+        stage('Build and Push Docker Image') {
             steps {
                 script {
-                 	
-                 		buildDockerImage("${imageName}")
-                      
-                }
-            }
-        }
-        stage('Push image to Docker hub') {
-            steps {
-                script {
-                 	
-                 		pushDockerImage("${dockerHubCredentialsID}", "${imageName}")
-                      
+                	// Navigate to the directory contains Dockerfile
+                 	dir('App') {
+                 		buildandPushDockerImage("${dockerHubCredentialsID}", "${imageName}")
+                        
+                    	}
                 }
             }
         }
 
-        stage('Edit new image in deployment.yaml file') {
-            steps {
-                script { 
-                	dir('k8s') {
-				        editNewImage("${imageName}")
-			}
-                }
-            }
-        }
         stage('Deploy on k8s Cluster') {
             steps {
                 script { 
+                        // Navigate to the directory contains kubernetes YAML files
                 	dir('k8s') {
-				         deployOnKubernetes("${k8sCredentialsID}")
-                    }
+				deployOnKubernetes("${k8sCredentialsID}", "${imageName}")
+                    	}
                 }
             }
         }
     }
 
     post {
-        always {
-            echo "${JOB_NAME}-${BUILD_NUMBER} pipeline always succeeded"
-        }
         success {
             echo "${JOB_NAME}-${BUILD_NUMBER} pipeline succeeded"
         }
