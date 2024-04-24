@@ -3,7 +3,7 @@ pipeline {
     agent any
     
     environment {
-        dockerHubCredentialsID	    = 'DockerHub'  		    			// DockerHub credentials 
+        dockerHubCredentialsID	    = 'dockerhub'  		    			// DockerHub credentials 
         imageName   		    = 'tabana1/nti-app'     			// DockerHub repo/image name.
 	k8sCredentialsID	    = 'mykubeconfig'	    				     // KubeConfig credentials ID.   
     }
